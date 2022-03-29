@@ -57,6 +57,8 @@ public class SessionCreateParams extends RequestParams {
    /**Is pre-authorize , 'y' OR 'n' **/
     private PreAuth preAuth;
 
+    /**The list of payment method types (e.g. card) that this Payment is allowed to use. **/
+    private List<String> paymentMethodTypes;
 
    /**Billing details . If not provide , Checkout should collect the customer’s billing address. **/
     private BillingDetails billingDetails;
