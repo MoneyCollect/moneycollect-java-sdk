@@ -1,5 +1,6 @@
 package com.moneycollect.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.moneycollect.MoneyCollect;
 import com.moneycollect.exception.MoneyCollectException;
 import com.moneycollect.model.common.Address;
@@ -19,6 +20,7 @@ import java.util.Map;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Customer  extends ApiResource {
 
     private String id;

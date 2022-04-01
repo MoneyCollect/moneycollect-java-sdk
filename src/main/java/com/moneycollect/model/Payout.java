@@ -1,5 +1,6 @@
 package com.moneycollect.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.moneycollect.MoneyCollect;
 import com.moneycollect.exception.MoneyCollectException;
 import com.moneycollect.net.ApiResource;
@@ -15,6 +16,7 @@ import java.util.Map;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Payout extends ApiResource {
     /**id of payout**/
     private String id;

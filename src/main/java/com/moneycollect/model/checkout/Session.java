@@ -1,5 +1,6 @@
 package com.moneycollect.model.checkout;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.moneycollect.MoneyCollect;
 import com.moneycollect.exception.MoneyCollectException;
 import com.moneycollect.model.common.BillingDetails;
@@ -20,6 +21,7 @@ import java.util.Map;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Session extends ApiResource{
 
     /**ID**/

@@ -1,5 +1,6 @@
 package com.moneycollect.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.moneycollect.MoneyCollect;
 import com.moneycollect.exception.MoneyCollectException;
 import com.moneycollect.model.common.BillingDetails;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PaymentMethod  extends ApiResource {
 
     /**Unique identifier for the object.**/
