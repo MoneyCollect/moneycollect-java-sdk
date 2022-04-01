@@ -21,7 +21,13 @@ public abstract class MoneyCollectException extends Exception {
     this(message, requestId, code, statusCode, null);
   }
 
-  /** Constructs a new MoneyCollect exception with the specified details. */
+  /** Constructs a new MoneyCollect exception with the specified details.
+   * @param message
+   * @param requestId
+   * @param code
+   * @param statusCode
+   * @param e
+   */
   protected MoneyCollectException(
       String message, String requestId, String code, Integer statusCode, Throwable e) {
     super(message, e);
