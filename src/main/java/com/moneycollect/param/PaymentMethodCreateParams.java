@@ -26,6 +26,36 @@ public class PaymentMethodCreateParams  extends RequestParams {
         @JsonProperty(value="card")
         CARD("card"),
 
+        @JsonProperty(value="kakao_pay")
+        KAKAO_PAY("kakao_pay"),
+
+        @JsonProperty(value="klarna")
+        Klarna("klarna"),
+
+        @JsonProperty(value="poli")
+        POLi("poli"),
+
+        @JsonProperty(value="MyBank")
+        MyBank("mybank"),
+
+        @JsonProperty(value="eps")
+        EPS("eps"),
+
+        @JsonProperty(value="przelewy24")
+        Przelewy24("przelewy24"),
+
+        @JsonProperty(value="bancontact")
+        Bancontact("bancontact"),
+
+        @JsonProperty(value="ideal")
+        ldeal("ideal"),
+
+        @JsonProperty(value="giropay")
+        Giropay("giropay"),
+
+        @JsonProperty(value="sorfort")
+        Sorfort("sorfort"),
+
         @JsonProperty(value="alipay_hk")
         ALIPAY_HK("alipay_hk"),
 

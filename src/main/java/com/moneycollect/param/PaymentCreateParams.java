@@ -100,10 +100,11 @@ public class PaymentCreateParams  extends RequestParams {
     /** "Statement descriptor,Must contain at least two letter,maximum 22 characters.**/
     private String statementDescriptor;
 
+    /**Client source channel(WEB, H5, APP, MINI).**/
+    private String  fromChannel;
 
     /** "Shipping information for this Payment**/
     private Shipping shipping;
-
 
     /** "A list of items the customer is purchasing**/
     private List<LineItem> lineItems;
