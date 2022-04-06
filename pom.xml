@@ -7,7 +7,7 @@
     <groupId>com.moneycollect</groupId>
     <artifactId>moneycollect-java</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>MoneyCollect Java client library</description>
     <url>https://github.com/MoneyCollect</url>
