@@ -1,7 +1,10 @@
 package com.moneycollect.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -16,8 +19,15 @@ public class JsonUtil {
 
     private static ObjectMapper init() {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true);
         objectMapper.setTimeZone(TimeZone.getTimeZone("UTC"));
         objectMapper.setDateFormat(new SimpleDateFormat(UTC_MS_PATTERN));
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(java.util.Date.class, new DateDeserializer());
+        objectMapper.registerModule(module);
         return objectMapper;
     }
 
