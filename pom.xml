@@ -7,7 +7,7 @@
     <groupId>com.moneycollect</groupId>
     <artifactId>moneycollect-java</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>MoneyCollect Java client library</description>
     <url>https://github.com/MoneyCollect</url>
@@ -35,15 +35,12 @@
             </dependency>
         </dependencies>
 
-    <!-- 许可证信息 -->
     <licenses>
-        <!-- Apache许可证 -->
         <license>
             <name>The Apache Software License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
-    <!-- SCM信息 -> git在github上托管 -->
     <scm>
         <connection>scm:git:git://github.com/MoneyCollect/moneycollect-java-sdk.git</connection>
         <developerConnection>scm:git:ssh://github.com/MoneyCollect/moneycollect-java-sdk.git</developerConnection>

@@ -11,11 +11,16 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 public final class Webhook {
   private static final long DEFAULT_TOLERANCE = 300;
+  public static final String REQUEST_TIME_HEADER = "request-time";
+  public static final String SIGNATURE_HEADER = "signature";
+  private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
   /**
    * Returns an Event instance using the provided JSON payload. Throws a JsonSyntaxException if the
@@ -23,14 +28,14 @@ public final class Webhook {
    * fails for any reason.
    *
    * @param payload the payload sent by MoneyCollect.
-   * @param sigHeader the contents of the signature header sent by MoneyCollect.
+   * @param signature the contents of the signature header sent by MoneyCollect.
    * @param secret secret used to generate the signature.
    * @return the Event instance
    * @throws SignatureVerificationException if the verification fails.
    */
-  public static Event constructEvent(String payload, String sigHeader, String secret)
-      throws SignatureVerificationException {
-    return constructEvent(payload, sigHeader, secret, DEFAULT_TOLERANCE);
+  public static Event constructEvent(String payload, String signature,String requestTime, String secret)
+          throws SignatureVerificationException {
+    return constructEvent(payload, signature,requestTime, secret, DEFAULT_TOLERANCE);
   }
 
   /**
@@ -39,7 +44,7 @@ public final class Webhook {
    * fails for any reason.
    *
    * @param payload the payload sent by MoneyCollect.
-   * @param sigHeader the contents of the signature header sent by MoneyCollect.
+   * @param signature the contents of the signature header sent by MoneyCollect.
    * @param secret secret used to generate the signature.
    * @param tolerance maximum difference in seconds allowed between the header's timestamp and the
    *     current time
@@ -47,112 +52,67 @@ public final class Webhook {
    * @throws SignatureVerificationException if the verification fails.
    */
   public static Event constructEvent(
-      String payload, String sigHeader, String secret, long tolerance)
-      throws SignatureVerificationException {
+          String payload, String signature,String requestTime, String secret, long tolerance)
+          throws SignatureVerificationException {
     Event event = JsonUtil.parseObject(payload, Event.class);
-    Signature.verifyHeader(payload, sigHeader, secret, tolerance);
+    Signature.verifyHeader(payload, signature,requestTime, secret, tolerance);
     return event;
   }
 
   public static final class Signature {
-    public static final String EXPECTED_SCHEME = "v1";
 
     /**
      * Verifies the signature header sent by MoneyCollect. Throws a SignatureVerificationException if the
      * verification fails for any reason.
      *
      * @param payload the payload sent by MoneyCollect.
-     * @param sigHeader the contents of the signature header sent by MoneyCollect.
+     * @param signature the contents of the signature header sent by MoneyCollect.
      * @param secret secret used to generate the signature.
      * @param tolerance maximum difference allowed between the header's timestamp and the current
      *     time
      * @throws SignatureVerificationException if the verification fails.
      */
     public static boolean verifyHeader(
-        String payload, String sigHeader, String secret, long tolerance)
-        throws SignatureVerificationException {
+            String payload, String signature,String requestTime, String secret, long tolerance)
+            throws SignatureVerificationException {
       // Get timestamp and signatures from header
-      long timestamp = getTimestamp(sigHeader);
-      List<String> signatures = getSignatures(sigHeader, EXPECTED_SCHEME);
-      if (timestamp <= 0) {
+      if (requestTime == null) {
         throw new SignatureVerificationException(
-            "Unable to extract timestamp and signatures from header", sigHeader);
+                "Unable to extract timestamp and signature from header", signature);
       }
-      if (signatures.size() == 0) {
+      if (signature == null) {
         throw new SignatureVerificationException(
-            "No signatures found with expected scheme", sigHeader);
+                "No signature found with expected scheme", signature);
       }
 
       // Compute expected signature
-      String signedPayload = String.format("%d.%s", timestamp, payload);
+      String signedPayload = String.format("%s.%s", requestTime, payload);
       String expectedSignature;
       try {
         expectedSignature = computeSignature(signedPayload, secret);
       } catch (Exception e) {
         throw new SignatureVerificationException(
-            "Unable to compute signature for payload", sigHeader);
+                "Unable to compute signature for payload", signature);
       }
 
       // Check if expected signature is found in list of header's signatures
-      boolean signatureFound = false;
-      for (String signature : signatures) {
-        if (StringUtils.secureCompare(expectedSignature, signature)) {
-          signatureFound = true;
-          break;
-        }
-      }
-      if (!signatureFound) {
+      if (!StringUtils.secureCompare(expectedSignature, signature)) {
         throw new SignatureVerificationException(
-            "No signatures found matching the expected signature for payload", sigHeader);
+                "No signatures found matching the expected signature for payload", signature);
       }
 
       // Check tolerance
-      if ((tolerance > 0) && (timestamp < (Util.getTimeNow() - tolerance))) {
-        throw new SignatureVerificationException("Timestamp outside the tolerance zone", sigHeader);
+      if ((tolerance > 0) && (getTimestamp(requestTime) < (Util.getTimeNow() - tolerance))) {
+        throw new SignatureVerificationException("Timestamp outside the tolerance zone", signature);
       }
 
       return true;
     }
 
-    /**
-     * Extracts the timestamp in a signature header.
-     *
-     * @param sigHeader the signature header
-     * @return the timestamp contained in the header.
-     */
-    private static long getTimestamp(String sigHeader) {
-      String[] items = sigHeader.split(",", -1);
-
-      for (String item : items) {
-        String[] itemParts = item.split("=", 2);
-        if (itemParts[0].equals("t")) {
-          return Long.parseLong(itemParts[1]);
-        }
-      }
-
-      return -1;
+    private static long getTimestamp(String headerDate){
+      return LocalDateTime.parse(headerDate,DATE_FORMAT).toInstant(ZoneOffset.UTC).getEpochSecond();
     }
 
-    /**
-     * Extracts the signatures matching a given scheme in a signature header.
-     *
-     * @param sigHeader the signature header
-     * @param scheme the signature scheme to look for.
-     * @return the list of signatures matching the provided scheme.
-     */
-    private static List<String> getSignatures(String sigHeader, String scheme) {
-      List<String> signatures = new ArrayList<String>();
-      String[] items = sigHeader.split(",", -1);
-
-      for (String item : items) {
-        String[] itemParts = item.split("=", 2);
-        if (itemParts[0].equals(scheme)) {
-          signatures.add(itemParts[1]);
-        }
-      }
-
-      return signatures;
-    }
 
     /**
      * Computes the signature for a given payload and secret.
@@ -164,7 +124,7 @@ public final class Webhook {
      * @return the signature as a string.
      */
     private static String computeSignature(String payload, String secret)
-        throws NoSuchAlgorithmException, InvalidKeyException {
+            throws NoSuchAlgorithmException, InvalidKeyException {
       return Util.computeHmacSha256(secret, payload);
     }
   }
@@ -178,7 +138,7 @@ public final class Webhook {
      * @return the code as a string.
      */
     public static String computeHmacSha256(String key, String message)
-        throws NoSuchAlgorithmException, InvalidKeyException {
+            throws NoSuchAlgorithmException, InvalidKeyException {
       Mac hasher = Mac.getInstance("HmacSHA256");
       hasher.init(new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
       byte[] hash = hasher.doFinal(message.getBytes(StandardCharsets.UTF_8));
