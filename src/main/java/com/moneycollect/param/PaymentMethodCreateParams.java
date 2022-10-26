@@ -59,8 +59,8 @@ public class PaymentMethodCreateParams  extends RequestParams {
         @JsonProperty(value="alipay_hk")
         ALIPAY_HK("alipay_hk"),
 
-        @JsonProperty(value="wechat_pay_hk")
-        WECHAT_PAY_HK("wechat_pay_hk");
+        @JsonProperty(value="wechat_pay")
+        WECHAT_PAY("wechat_pay");
 
         @Getter(onMethod = @__({@Override}))
         private final String value;

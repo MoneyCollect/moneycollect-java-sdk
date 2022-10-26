@@ -112,6 +112,12 @@ public class PaymentCreateParams  extends RequestParams {
     /** "Recurring payment**/
     private Recurring recurring;
 
+    /**When fromChannel=APP,appScheme is required.**/
+    private String  appScheme;
+
+    /** Third party open platform's user id, such as wechat user's openId. when use wechat officeAccount or MiniProgram pay, it is must.**/
+    private String  openUserId;
+
     @Getter
     @Builder(setterPrefix = "set")
     public static class AutomaticPaymentMethods{
