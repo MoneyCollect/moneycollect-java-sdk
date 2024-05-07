@@ -1,9 +1,11 @@
 package com.moneycollect.model.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BillingDetails {
 
     /** firstName **/

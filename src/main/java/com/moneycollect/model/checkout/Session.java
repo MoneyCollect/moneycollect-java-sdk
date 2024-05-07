@@ -99,6 +99,12 @@ public class Session extends ApiResource{
     /**Statement descriptor,Must contain at least two letter,maximum 22 characters.**/
     private String statementDescriptor;
 
+    /** A list of the types of payment methods (e.g. card) this Checkout Session is allowed to accept.*/
+    private List<String> paymentMethodTypes;
+
+    /** Card types that support installment */
+    private List<String> supportInstallmentCardTypes;
+
     /** Creates a Session object. */
     public static Session create(SessionCreateParams params) throws MoneyCollectException {
         return create(params, (RequestOptions) null);

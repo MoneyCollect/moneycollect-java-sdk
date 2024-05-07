@@ -198,8 +198,8 @@ public class MoneyCollectRequest {
       throw new AuthenticationException(
           "No API key provided. Set your API key using `MoneyCollect.apiKey = \"<API-KEY>\"`. You can "
               + "generate API keys from the MoneyCollect Dashboard. See "
-              + "https://moneycollect.com/docs/api/authentication for details or contact support at "
-              + "https://support.moneycollect.com/email if you have any questions.",
+              + "https://apireference.moneycollect.com/docs/api-v1/ZG9jOjExMDcyMQ-authentication for details or contact support at "
+              + "support@moneycollect.com if you have any questions.",
           null,
           null,
           0);
@@ -207,8 +207,8 @@ public class MoneyCollectRequest {
       throw new AuthenticationException(
           "Your API key is invalid, as it is an empty string. You can double-check your API key "
               + "from the MoneyCollect Dashboard. See "
-              + "https://moneycollect.com/docs/api/authentication for details or contact support at "
-              + "https://support.moneycollect.com/email if you have any questions.",
+              + "https://apireference.moneycollect.com/docs/api-v1/ZG9jOjExMDcyMQ-authentication for details or contact support at "
+              + "support@moneycollect.com if you have any questions.",
           null,
           null,
           0);
@@ -216,8 +216,8 @@ public class MoneyCollectRequest {
       throw new AuthenticationException(
           "Your API key is invalid, as it contains whitespace. You can double-check your API key "
               + "from the MoneyCollect Dashboard. See "
-              + "https://moneycollect.com/docs/api/authentication for details or contact support at "
-              + "https://support.moneycollect.com/email if you have any questions.",
+              + "https://apireference.moneycollect.com/docs/api-v1/ZG9jOjExMDcyMQ-authentication for details or contact support at "
+              + "support@moneycollect.com if you have any questions.",
           null,
           null,
           0);

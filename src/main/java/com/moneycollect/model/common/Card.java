@@ -1,5 +1,6 @@
 package com.moneycollect.model.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Card {
 
     /** Card brand. Can be amex, diners, discover, jcb, mastercard, unionpay, visa, or unknown.**/

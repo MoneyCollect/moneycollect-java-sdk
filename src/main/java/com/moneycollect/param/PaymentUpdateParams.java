@@ -47,6 +47,9 @@ public class PaymentUpdateParams extends RequestParams {
     /**Shipping information for this Payment**/
     private Shipping shipping;
 
+    /** If the value is true or false, the original value will be updated; if gives the other values(include null) the original value will not be updated */
+    private Boolean use3D;
+
     public enum SetupFutureUsage implements RequestParams.EnumParam {
         @JsonProperty("off")
         OFF("off"),

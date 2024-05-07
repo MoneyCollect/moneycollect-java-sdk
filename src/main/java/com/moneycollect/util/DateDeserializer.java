@@ -89,8 +89,8 @@ public class DateDeserializer extends StdDeserializer {
 
 
     /**
-     * @see com.fasterxml.jackson.databind.JsonDeserializer#deserialize(JsonParser,
-     *      DeserializationContext)
+     * @see com.fasterxml.jackson.databind.JsonDeserializer#deserialize(com.fasterxml.jackson.core.JsonParser,
+     *      com.fasterxml.jackson.databind.DeserializationContext)
      */
     @Override
     public Date deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {

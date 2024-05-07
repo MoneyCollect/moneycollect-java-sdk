@@ -1,6 +1,7 @@
 package com.moneycollect.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.moneycollect.MoneyCollect;
 import com.moneycollect.exception.MoneyCollectException;
 import com.moneycollect.model.common.BillingDetails;
@@ -10,10 +11,12 @@ import com.moneycollect.model.common.Shipping;
 import com.moneycollect.net.ApiResource;
 import com.moneycollect.net.RequestOptions;
 import com.moneycollect.param.*;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -160,6 +163,24 @@ public class Payment  extends ApiResource {
     /**error message**/
     private String errorMessage;
 
+    /** User-agent string as provided in the request. */
+    private String userAgent;
+
+    /** Payment recurring setting */
+    private PaymentRecurring recurring;
+
+    /** ID of the invoice that created this Payment, if it exists.*/
+    private String invoiceId;
+
+    /** Payment installment */
+    private PaymentInstallment installment;
+
+    /** Client source channel(WEB, H5, APP, MINI). */
+    private String  fromChannel;
+
+    /** If the value of use3D is true, then we will try to use the 3D bank channel for processing this transaction, if not set or false, it is up to our risk control system to decide whether to use the 3D channel. This setting is only valid for credit card payments, if not credit card payment, setting it to true will be ignored */
+    private Boolean use3D;
+
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = false)
@@ -197,6 +218,48 @@ public class Payment  extends ApiResource {
          * card details
          */
         private Card card;
+    }
+
+    @Getter
+    @Setter
+    @EqualsAndHashCode(callSuper = false)
+    public class PaymentRecurring {
+
+        private String relationPaymentId;
+
+        private Boolean initial;
+    }
+
+    @Getter
+    @Setter
+    @EqualsAndHashCode(callSuper = false)
+    public class PaymentInstallment {
+
+        /** Support installment card types*/
+        private List<String> supportInstallmentCardTypes;
+
+        /** installment plan */
+        private InstallmentPlan installmentPlan;
+
+        /** Card installment plan Id */
+        private String vPlanID;
+
+        /** acceptedTAndCVersion */
+        private Integer acceptedTAndCVersion;
+
+        @Data
+        public class InstallmentPlan {
+            private String currency;
+            private BigDecimal amount;
+            private String annualPercentageRate;
+            private BigDecimal installmentPaymentAmount;
+            private BigDecimal totalFees;
+            private BigDecimal totalAmount;
+            private String name;
+            private String type;
+            private Integer numberOfInstallments;
+            private String installmentFrequency;
+        }
     }
 
     public static Payment create(PaymentCreateParams params) throws MoneyCollectException {

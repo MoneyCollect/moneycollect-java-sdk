@@ -37,6 +37,8 @@ public class PaymentConfirmParams  extends RequestParams {
 
     private Shipping shipping;
 
+    private InstallmentPlan installmentPlan;
+
     public enum SetupFutureUsage implements RequestParams.EnumParam {
         @JsonProperty("off")
         OFF("off"),
@@ -90,5 +92,16 @@ public class PaymentConfirmParams  extends RequestParams {
 
         /**name="state",value="State, county, province, or region."**/
         private String state;
+    }
+
+    @Getter
+    @Builder(setterPrefix = "set")
+    public static  class InstallmentPlan {
+
+        /** Card installment plan Id */
+        private String vPlanID;
+
+        /** acceptedTAndCVersion */
+        private Integer acceptedTAndCVersion;
     }
 }

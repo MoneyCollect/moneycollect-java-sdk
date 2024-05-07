@@ -118,6 +118,9 @@ public class PaymentCreateParams  extends RequestParams {
     /** Third party open platform's user id, such as wechat user's openId. when use wechat officeAccount or MiniProgram pay, it is must.**/
     private String  openUserId;
 
+    /** If the value of use3D is true, then we will try to use the 3D bank channel for processing this transaction, if not set or false, it is up to our risk control system to decide whether to use the 3D channel. This setting is only valid for credit card payments, if not credit card payment, setting it to true will be ignored */
+    private Boolean use3D;
+
     @Getter
     @Builder(setterPrefix = "set")
     public static class AutomaticPaymentMethods{

@@ -22,6 +22,15 @@ public class PaymentMethodCreateParams  extends RequestParams {
      /** Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.**/
     private BillingDetails billingDetails;
 
+    /** If this is a boleto PaymentMethod, this hash contains details about the Boleto payment method.*/
+    private Boleto boleto;
+
+    /** If this is a creditCardBrazil PaymentMethod, this hash contains details about the CreditCardBrazil payment method. */
+    private CreditCardBrazil creditCardBrazil;
+
+    /** If this is a pix PaymentMethod, this hash contains details about the PIX payment method. */
+    private DlocalPix pix;
+
     public enum PaymentMethodType implements RequestParams.EnumParam {
         @JsonProperty(value="card")
         CARD("card"),
@@ -86,6 +95,29 @@ public class PaymentMethodCreateParams  extends RequestParams {
         /**Four-digit number representing the card’s expiration year.**/
         private String expYear;
 
+    }
+
+    @Getter
+    @Builder(setterPrefix = "set")
+    @EqualsAndHashCode(callSuper = false)
+    public static class Boleto implements Serializable {
+        /** The tax ID of the customer (CPF for individual consumers or CNPJ for businesses consumers) */
+        private String taxId;
+    }
+
+    @Getter
+    @Builder(setterPrefix = "set")
+    @EqualsAndHashCode(callSuper = false)
+    public static class CreditCardBrazil implements Serializable {
+        /** The tax ID of the customer (CPF for individual consumers or CNPJ for businesses consumers) */
+        private String taxId;
+    }
+    @Getter
+    @Builder(setterPrefix = "set")
+    @EqualsAndHashCode(callSuper = false)
+    public static class DlocalPix implements Serializable {
+        /** The tax ID of the customer (CPF for individual consumers or CNPJ for businesses consumers) */
+        private String taxId;
     }
 
     @Getter

@@ -1,10 +1,12 @@
 package com.moneycollect.model.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LineItem {
 
    /**The product’s name, meant to be displayable to the customer. **/

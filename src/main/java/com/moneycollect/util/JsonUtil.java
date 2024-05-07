@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -19,7 +21,6 @@ public class JsonUtil {
 
     private static ObjectMapper init() {
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
         objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true);
@@ -55,6 +56,12 @@ public class JsonUtil {
     }
 
     public static <T> T toJavaObject(Object json , Class<T> clazz){
+        //json maybe is a list
+        if (json instanceof List) {
+            Map map = new HashMap();
+            map.put("data", json);
+            json=map;
+        }
         return  objectMapper.convertValue(json, clazz);
     }
 
